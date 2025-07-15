@@ -52,10 +52,7 @@ const App =() => {
   const [percentage, setPercentage] = useState(0)
 
 
-  // let sum = 0
-  // for (let num of allClicks) {
-  //   sum += num
-  // }
+
 
   const handleGoodClick = () => {
     const newGoodClick = good + 1
