@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 
-const Button = (props) => <button onClick={props.click}>{props.text}</button>
+const Button = (props) => <button onClick={props.onClick}>{props.text}</button>
 
 
 const App = () => {
@@ -51,8 +51,8 @@ const App = () => {
       <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {vote[selected]} votes</p>
-      <Button click={handleVoteClick} text="vote" />
-      <Button click={handleClick} text="next anecdote" />
+      <Button onClick={handleVoteClick} text="vote" />
+      <Button onClick={handleClick} text="next anecdote" />
       <h1>Anecdote with most votes</h1>
       <p>{anecdotes[highestVote]}</p>
       <p>has {vote[highestVote]} votes</p>
