@@ -10,7 +10,7 @@ This is a simple Express.js backend for managing a phonebook. It supports the fo
 
 ## 🚀 Live Demo
 
-👉 [View the deployed app](https://phonebook-api-9wpi.onrender.com/api/persons)
+👉 [View the deployed app](https://phonebook-api-9wpi.onrender.com)
 
 _(Replace the link with your actual Render deployment URL)_
 
