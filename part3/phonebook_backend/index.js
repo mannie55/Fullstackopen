@@ -2,8 +2,12 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 
-const cors = require('cors')
-app.use(cors())
+//allows to serve static content
+app.use(express.static('dist'))
+
+// const cors = require('cors')
+// app.use(cors())
+
 app.use(express.json())
 
 morgan.token('type', (request, response) => {
