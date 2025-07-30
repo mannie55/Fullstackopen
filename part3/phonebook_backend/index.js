@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express = require('express')
-const morgan = require('morgan')
 const app = express()
 const Phonebook = require('./models/phonebook')
 
@@ -12,11 +11,7 @@ app.use(express.static('dist'))
 
 app.use(express.json())
 
-morgan.token('type', (request, response) => {
-  return request.headers['content-type']
-} )
 
-app.use(morgan(':url :status :response-time ms '))
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -32,29 +27,32 @@ const errorHandler = (error, request, response, next) => {
 
 
 
-app.get('/api/persons', (request, response) => {  
-  console.log("params:", request.params.id);
+app.get('/api/persons', (request, response) => {
+  console.log('params:', request.params.id)
   Phonebook.find({})
     .then(contacts => {
       response.json(contacts)
       response.status(200).end()
     })
-  
+
 })
 
 
 app.get('/api/persons/:id', (request, response, next) => {
+  const id = request.params.id
   Phonebook.findById(id)
     .then(contact => {
       response.json(contact)
     })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Phonebook.findByIdAndDelete(id)
     .then(result => {
-      response.status(204).end();
+      console.log(result)
+      response.status(204).end()
     })
     .catch((error) => next(error))
 })
@@ -66,13 +64,13 @@ app.post('/api/persons', (request, response, next) => {
   if (!body.name) {
     return response.status(400).json({ error: 'content missing' })
   }
-  
+
   const contact = new Phonebook({
     name: body.name,
     number: body.number,
   })
 
-  
+
   contact.save()
     .then(savedContact => {
       response.json(savedContact)
@@ -147,24 +145,24 @@ app.listen(PORT, () => {
 
 
 // let persons = [
-//     { 
+//     {
 //       "id": "1",
-//       "name": "Arto Hellas", 
+//       "name": "Arto Hellas",
 //       "number": "040-123456"
 //     },
-//     { 
+//     {
 //       "id": "2",
-//       "name": "Ada Lovelace", 
+//       "name": "Ada Lovelace",
 //       "number": "39-44-5323523"
 //     },
-//     { 
+//     {
 //       "id": "3",
-//       "name": "Dan Abramov", 
+//       "name": "Dan Abramov",
 //       "number": "12-43-234345"
 //     },
-//     { 
+//     {
 //       "id": "4",
-//       "name": "Mary Poppendieck", 
+//       "name": "Mary Poppendieck",
 //       "number": "39-23-6423122"
 //     }
 // ]
@@ -174,7 +172,7 @@ app.listen(PORT, () => {
 
 
 // const totalPeople = () => {
-    
+
 //     return persons.length
 // }
 
