@@ -48,10 +48,15 @@ const App = () => {
             setPersons(persons.concat(returnedContact))
 
             setNewName('')
-
             setNewNumber('')
-
           })
+          .catch(error => {
+            console.log(error.response.data.error)
+            setMessage(`${error.response.data.error}`)
+            setTimeout(() => setMessage(null), 3000)
+            setNewName('')
+            setNewNumber('')
+    })
       }
     )()
   }
