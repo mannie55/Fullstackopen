@@ -3,16 +3,21 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch index.js",
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=develpment node --watch index.js",
+    "test": "nNODE_ENV=test node --test"
   },
   "author": "Ogbonna Nnamdi",
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
   }
 }
