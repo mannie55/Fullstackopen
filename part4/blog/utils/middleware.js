@@ -7,13 +7,15 @@ const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
   if (authorization && authorization.startsWith('Bearer ')) {
     request.token = authorization.replace('Bearer ', '')
-  } else null
+  }
   next()
 }
 
 const userExtractor = (request, response, next) => {
   try {
-
+    if (request.method === 'GET') {
+      return next()
+    }
     if (!request.token) {
       return response.status(401).json({ error: 'token missing' })
     }
