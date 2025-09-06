@@ -9,15 +9,6 @@ blogsRouter.get('/', async (request, response, next) => {
 })
 
 
-// const getTokenFrom = request => {
-//     const authorization = request.get('authorization')
-//     if (authorization && authorization.startsWith('Bearer ')) {
-//         return authorization.replace('Bearer ', '')
-//     }
-//     return null
-// }
-
-
 
 
 blogsRouter.post('/', async (request, response, next) => {
@@ -51,13 +42,35 @@ blogsRouter.post('/', async (request, response, next) => {
         })
 
         const savedBlog = await blog.save()
-        userInDb.blogs = userInDb.blogs.concat(savedBlog._id) // or userInDb.blogs.push(savedBlog._id)
+        const populatedBlog = await Blog.findById(savedBlog._id).populate('user', { username: 1, name: 1 })
+        userInDb.blogs = userInDb.blogs.concat(populatedBlog._id) // or userInDb.blogs.push(savedBlog._id)
         await userInDb.save()
-        response.status(201).json(savedBlog)
+        response.status(201).json(populatedBlog)
     } catch (error) {
         next(error)
     }
 })
+
+blogsRouter.put('/:id', async (request, response, next) => {
+    const { likes } = request.body
+
+    try {
+        const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 })
+
+
+        if (!blog) {
+            return response.status(404).end()
+        }
+
+        blog.likes = likes
+
+        const savedBlog = await blog.save()
+        response.status(200).json(savedBlog)
+    } catch (exception) {
+        next(exception)
+    }
+})
+
 
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
@@ -86,20 +99,5 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 })
 
 
-blogsRouter.put('/:id', async (request, response, next) => {
-    try {
-        const updatedBlog = await Blog.findByIdAndUpdate(
-            request.params.id,
-            { $set: request.body },
-            { new: true, runValidators: true }
-        )
-        if (!updatedBlog) {
-            return response.status(404).end()
-        }
-        response.status(200).json(updatedBlog)
-    } catch (exception) {
-        next(exception)
-    }
-})
 
 module.exports = blogsRouter

@@ -19,7 +19,31 @@ const create = async newObject => {
   }
 
   const response = await axios.post(baseUrl, newObject, config)
+  console.log('hit here')
   return response.data
 }
 
-export default { getAll, create, setToken }
+const update = async (id, newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  console.log('token', config)
+
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
+
+  return response.data
+}
+
+const remove = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  console.log('hit here')
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  console.log('hit here again')
+  return response.data
+}
+
+
+export default { getAll, create, setToken, update, remove }
